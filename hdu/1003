@@ -1,0 +1,47 @@
+#include <iostream>
+using namespace std;
+const int extre=10;
+int a[100000+extre];
+int startIndex;
+int endIndex;
+int temp;
+int main() {
+    int T;
+    cin>>T;
+    int cnt=0;
+    while((T--)!=0)
+    {
+        int num;
+        cin>>num;
+        for(int i=0;i<num;i++)
+        {
+            cin>>a[i];
+        }
+        int sum=0;
+        int max=-0xfffffff;
+        startIndex=0;
+        endIndex=0;
+        temp=0;
+        for(int i=0;i<num;i++)
+        {
+            sum=sum+a[i];
+            if(max<sum)
+            {
+                endIndex=i;
+                startIndex=temp;
+                max=sum;
+            }
+            if(sum<0) {
+                temp=i+1;
+                sum = 0;
+            }
+        }
+        cout<<"Case "<<++cnt<<":"<<endl;
+        cout<<max<<" "<<startIndex+1<<" "<<endIndex+1<<endl;
+        if(T!=0)
+        {
+            cout<<endl;
+        }
+    }
+    return 0;
+}
