@@ -1,0 +1,154 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<stdlib.h>
+#include<cstdio>
+#include<string.h>
+#include<math.h>
+#include<fstream>
+#include<map>
+using namespace std;
+
+
+vector<string> p1,p2;
+int N;
+int k;
+int cnt;
+int f;
+map<string,int> myMap;
+
+void init()
+{
+    myMap["2C"]=21;
+    myMap["2D"]=22;
+    myMap["2S"]=23;
+    myMap["2H"]=24;
+
+    myMap["3C"]=31;
+    myMap["3D"]=32;
+    myMap["3S"]=33;
+    myMap["3H"]=34;
+
+    myMap["4C"]=41;
+    myMap["4D"]=42;
+    myMap["4S"]=43;
+    myMap["4H"]=44;
+
+    myMap["5C"]=51;
+    myMap["5D"]=52;
+    myMap["5S"]=53;
+    myMap["5H"]=54;
+
+    myMap["6C"]=61;
+    myMap["6D"]=62;
+    myMap["6S"]=63;
+    myMap["6H"]=64;
+
+    myMap["7C"]=71;
+    myMap["7D"]=72;
+    myMap["7S"]=73;
+    myMap["7H"]=74;
+
+    myMap["8C"]=81;
+    myMap["8D"]=82;
+    myMap["8S"]=83;
+    myMap["8H"]=84;
+
+
+    myMap["9C"]=91;
+    myMap["9D"]=92;
+    myMap["9S"]=93;
+    myMap["9H"]=94;
+
+    myMap["TC"]=101;
+    myMap["TD"]=102;
+    myMap["TS"]=103;
+    myMap["TH"]=104;
+
+    myMap["JC"]=111;
+    myMap["JD"]=112;
+    myMap["JS"]=113;
+    myMap["JH"]=114;
+
+    myMap["QC"]=121;
+    myMap["QD"]=122;
+    myMap["QS"]=123;
+    myMap["QH"]=124;
+
+    myMap["KC"]=131;
+    myMap["KD"]=132;
+    myMap["KS"]=133;
+    myMap["KH"]=134;
+
+    myMap["AC"]=141;
+    myMap["AD"]=142;
+    myMap["AS"]=143;
+    myMap["AH"]=144;
+}
+bool cmp(string p1,string p2)
+{
+    if(myMap[p1]<myMap[p2])
+        return true;
+    return false;
+}
+
+//void dfs(int index1,int index2,int num){
+//    if(index1==-1)
+//    {
+//        f=1;
+//        cnt=num;
+//        return;
+//    }
+//    for(int i=index1;i>=0;i--)
+//    {
+//        if(f==0) {
+//            if (cmp(p1[i],p2[index2]))
+//            {
+//                dfs(i-1,index2-1,num+1);
+//            }
+//        }else{
+//            break;
+//        }
+//    }
+//}
+int main(){
+    cin>>N;
+    init();
+    while(N--)
+    {
+        cin>>k;
+        for(int i=0;i<k;i++)
+        {
+            string temp;
+            cin>>temp;
+            p1.push_back(temp);
+        }
+        for(int i=0;i<k;i++)
+        {
+            string temp;
+            cin>>temp;
+            p2.push_back(temp);
+        }
+        sort(p1.begin(),p1.end(),cmp);
+        sort(p2.begin(),p2.end(),cmp);
+        cnt=0;
+        f=0;
+        int i1,i2;
+        i1=k;
+        i2=k;
+        while(i1)
+        {
+            if(cmp(p1[i1-1],p2[i2-1]))
+            {
+                i1--,i2--;
+                cnt++;
+            }else{
+                i1--;
+            }
+        }
+        cout<<cnt<<endl;
+    }
+    return 0;
+}
