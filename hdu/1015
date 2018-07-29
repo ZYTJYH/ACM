@@ -1,0 +1,66 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<stdlib.h>
+#include<cstdio>
+#include<string.h>
+#include<math.h>
+#include<fstream>
+#include<map>
+using namespace std;
+long target;
+string input;
+string tempStr;
+string resultStr;
+int visit[30];
+int getTarget()
+{
+    int m1=tempStr[0]-'A'+1;
+    int m2=tempStr[1]-'A'+1;
+    int m3=tempStr[2]-'A'+1;
+    int m4=tempStr[3]-'A'+1;
+    int m5=tempStr[4]-'A'+1;
+    if(m1-m2*m2+m3*m3*m3-m4*m4*m4*m4+m5*m5*m5*m5*m5==target)
+        return true;
+    return false;
+}
+void dfs(int num){
+    if(num==5)
+    {
+        if(getTarget())
+        {
+            if(tempStr>resultStr)
+                resultStr=tempStr;
+        }
+        return;
+    }
+    for(int i=0;i<input.size();i++)
+    {
+        if(visit[i]==0)
+        {
+            tempStr[num]=input[i];
+            visit[i]=1;
+            dfs(num+1);
+            visit[i]=0;
+        }
+    }
+    return ;
+}
+int main(){
+    while(cin>>target>>input)
+    {
+        if(target==0&&input=="END")
+            break;
+        resultStr="     ";
+        tempStr="     ";
+        memset(visit,0,sizeof(visit));
+        dfs(0);
+        if(resultStr=="     ")
+            cout<<"no solution"<<endl;
+        else
+            cout<<resultStr<<endl;
+    }
+    return 0;
+}
