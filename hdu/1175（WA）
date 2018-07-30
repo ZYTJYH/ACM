@@ -1,0 +1,157 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<stdlib.h>
+#include<cstdio>
+#include<string.h>
+#include<math.h>
+#include<fstream>
+#include<map>
+using namespace std;
+
+int n,m;
+int maze[1000+10][1000+10];
+int visit[1000+10][1000+10];
+int q;
+int ax1,ay1,ax2,ay2;
+int f;
+bool isAttain(int tx,int ty)
+{
+    bool f1=(tx-1==ax2)&&(ty==ay2);
+    bool f2=(tx==ax2)&&(ty-1==ay2);
+    bool f3=(tx+1==ax2)&&(ty==ay2);
+    bool f4=(tx==ax2)&&(ty+1==ay2);
+    return f1||f2||f3||f4;
+}
+
+bool isHasBroadZero(int tx,int ty)
+{
+    if(maze[tx-1][ty]!=0&&maze[tx][ty-1]!=0&&maze[tx+1][ty]!=0&&maze[tx][ty+1]!=0)
+        return false;
+    else
+        return true;
+}
+void dfs(int tx,int ty,int lastDir,int turnNum)
+{
+    if(turnNum==3)
+    {
+        return ;
+    }
+    if(isAttain(tx,ty))
+    {
+        if(turnNum<2)
+        {
+            f=1;
+        }else{
+            switch(lastDir)
+            {
+                case 1:
+                    if(tx-1==ax2&&ty==ay2)
+                        f=1;
+                    break;
+                case 2:
+                    if(tx==ax2&&ty+1==ay2)
+                        f=1;
+                    break;
+                case 3:
+                    if(tx+1==ax2&&ty==ay2)
+                        f=1;
+                    break;
+                case 4:
+                    if(tx==ax2&&ty-1==ay2)
+                        f=1;
+                    break;
+            }
+        }
+        return ;
+    }
+    if(!f&&visit[tx-1][ty]==0&&maze[tx-1][ty]==0)
+    {
+        visit[tx-1][ty]=1;
+        if(lastDir!=-1&&lastDir!=0) {
+            dfs(tx - 1, ty,0,turnNum+1);
+        }else{
+            dfs(tx - 1, ty,0,turnNum);
+        }
+        visit[tx-1][ty]=0;
+    }
+    if(!f&&visit[tx][ty-1]==0&&maze[tx][ty-1]==0)
+    {
+        visit[tx][ty-1]=1;
+        if(lastDir!=-1&&lastDir!=4) {
+            dfs(tx, ty - 1,4,turnNum+1);
+        }else{
+            dfs(tx, ty - 1,4,turnNum);
+        }
+        visit[tx][ty-1]=0;
+    }
+    if(!f&&visit[tx+1][ty]==0&&maze[tx+1][ty]==0)
+    {
+        visit[tx+1][ty]=1;
+        if(lastDir!=-1&&lastDir!=3) {
+            dfs(tx + 1, ty,3,turnNum+1);
+        }else{
+            dfs(tx + 1, ty,3,turnNum);
+        }
+        visit[tx+1][ty]=0;
+    }
+    if(!f&&visit[tx][ty+1]==0&&maze[tx][ty+1]==0)
+    {
+        visit[tx][ty+1]=1;
+        if(lastDir!=-1&&lastDir!=2) {
+            dfs(tx, ty + 1, 2, turnNum + 1);
+        }else{
+            dfs(tx, ty + 1, 2, turnNum);
+        }
+        visit[tx][ty+1]=0;
+    }
+
+}
+int main(){
+    while(cin>>n>>m,n||m)
+    {
+        for(int i=1;i<=n;i++)
+        {
+            maze[i][0]=-1;
+            maze[i][m+1]=-1;
+            for(int j=1;j<=m;j++)
+            {
+                maze[0][j]=-1;
+                maze[n+1][j]=-1;
+                cin>>maze[i][j];
+            }
+        }
+        maze[0][0]=-1;
+        maze[n+1][m+1]=-1;
+        maze[0][m+1]=-1;
+        maze[n+1][0]=-1;
+        cin>>q;
+        for(int i=0;i<q;i++)
+        {
+            cin>>ax1>>ay1>>ax2>>ay2;
+            f=0;
+            memset(visit,0, sizeof(visit));
+            if(isAttain(ax1,ay1))
+            {
+                cout<<"YES"<<endl;
+            }else {
+                if(isHasBroadZero(ax2,ay2))
+                {
+                    if (maze[ax1][ay1] && maze[ax2][ay2] && maze[ax1][ay1] == maze[ax2][ay2]) {
+                        dfs(ax1,ay1,-1,0);
+                    }
+                    if (f == 1)
+                        cout << "YES" << endl;
+                    else
+                        cout << "NO" << endl;
+                }else {
+                    cout<<"NO"<<endl;
+                }
+            }
+        }
+
+    }
+    return 0;
+}
