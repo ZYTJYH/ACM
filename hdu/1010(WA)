@@ -1,0 +1,108 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<stdlib.h>
+#include<cstdio>
+#include<string.h>
+#include<math.h>
+#include<fstream>
+#include<map>
+using namespace std;
+
+int N,M,T;
+char maze[10][10];
+int visit[10][10];
+int sx,sy,ex,ey;
+int f=0;
+int dx[]={1,-1,0,0};
+int dy[]={0,0,1,-1};
+int dis(int x,int y)
+{
+    return abs(ex-x)+abs(ey-y);
+}
+void dfs(int tx,int ty,int time)
+{
+    if(tx==ex&&ty==ey&&time==0)
+    {
+        f=1;
+        return;
+    }
+    if(time==0)
+    {
+        return ;
+    }
+    if(dis(tx,ty)%2==1&&time%2==0||dis(tx,ty)%2==0&&time%2==1)
+    {
+        return ;
+    }
+
+    if(!f) {
+        for (int i = 0; i < 4; i++) {
+            if (!f && visit[tx + dx[i]][ty + dy[i]] == 0) {
+                visit[tx + dx[i]][ty + dy[i]] = 1;
+                dfs(tx + dx[i], ty + dy[i], time - 1);
+                visit[tx + dx[i]][ty + dy[i]] = 0;
+            }
+        }
+    }
+}
+int main(){
+    while(cin>>N>>M>>T,N&&M&&T)
+    {
+        int cnt=0;
+        for(int i=1;i<=N;i++)
+        {
+            maze[i][0]='X';
+            maze[i][M+1]='X';
+            for(int j=1;j<=M;j++)
+            {
+                maze[0][j]='X';
+                maze[N+1][j]='X';
+                cin>>maze[i][j];
+                if(maze[i][j]=='S')
+                {
+                    sx=i;
+                    sy=j;
+                }
+                if(maze[i][j]=='D')
+                {
+                    ex=i;
+                    ey=j;
+                }
+                if(maze[i][j]=='X')
+                {
+                    cnt++;
+                }
+            }
+        }
+        maze[0][0]='X';
+        maze[0][M+1]='X';
+        maze[N+1][0]='X';
+        maze[N+1][M+1]='X';
+        for(int i=0;i<=N+1;i++)
+        {
+            for(int j=0;j<=M+1;j++)
+            {
+                if(maze[i][j]=='X')
+                {
+                    visit[i][j]=1;
+                }else{
+                    visit[i][j]=0;
+                }
+            }
+        }
+        f=0;
+        if(N*M-cnt>T) {
+            dfs(sx, sy, T);
+        }
+        if(f){
+            cout<<"YES"<<endl;
+        }else{
+            cout<<"NO"<<endl;
+        }
+
+    }
+    return 0;
+}
