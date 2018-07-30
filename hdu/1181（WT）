@@ -1,1 +1,66 @@
 
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<stdlib.h>
+#include<cstdio>
+#include<string.h>
+#include<math.h>
+#include<fstream>
+#include<map>
+using namespace std;
+
+int T;
+vector<string> input(10000+10);
+int visit[10000+10];
+int f;
+int ti;
+void dfs(char front,char back)
+{
+    if(back=='m')
+    {
+        f=1;
+        return;
+    }
+    if(f!=1) {
+        for (int i = 0; i < ti-1; i++) {
+            if(!f&&!visit[i]&&input[i][0]==back)
+            {
+                visit[i]=1;
+                dfs(input[i][0],input[i][input[i].size()-1]);
+                visit[i]=0;
+            }
+        }
+    }
+}
+
+int main(){
+    while(cin>>input[0])
+    {
+        memset(visit,0,sizeof(visit));
+        if(input[0]=="0") {
+            continue;
+        }
+        ti=1;
+        while(cin>>input[ti++])
+        {
+            if(input[ti-1]=="0")
+                break;
+        }
+        f=0;
+        for(int i=0;i<ti-1;i++) {
+            if(!f&&input[i][0]=='b') {
+                visit[i] = 1;
+                dfs(input[i][0], input[i][input[i].size() - 1]);
+                visit[i]=0;
+            }
+        }
+        if(f)
+            cout<<"Yes."<<endl;
+        else
+            cout<<"No."<<endl;
+    }
+    return 0;
+}
